@@ -22,8 +22,7 @@ public class OrderController {
         return ResponseEntity.ok(
                 service.createOrder(
                         request.getCustomerId(),
-                        request.getItems(),
-                        request.getPaymentStatus()
+                        request.getItems()
                 )
         );
     }
@@ -40,19 +39,22 @@ public class OrderController {
 
     @PatchMapping("/{id}/status")
     public ResponseEntity<OrderResponse> updateOrderStatus(
-            @PathVariable Long id, @RequestBody OrderStatusUpdateRequest req) {
+            @PathVariable Long id,
+            @RequestBody OrderStatusUpdateRequest req
+    ) {
         return ResponseEntity.ok(service.updateOrderStatus(id, req.getStatus()));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<OrderResponse> updateOrder(
             @PathVariable Long id,
-            @RequestBody OrderRequest request) {
+            @RequestBody OrderRequest request
+    ) {
         return ResponseEntity.ok(service.updateOrder(id, request));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable Long id ){
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
         service.deleteOrder(id);
         return ResponseEntity.noContent().build();
     }

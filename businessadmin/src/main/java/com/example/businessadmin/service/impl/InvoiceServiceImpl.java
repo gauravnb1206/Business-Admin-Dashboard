@@ -4,6 +4,7 @@ import com.example.businessadmin.dto.InvoiceRequest;
 import com.example.businessadmin.dto.InvoiceResponse;
 import com.example.businessadmin.entity.Invoice;
 import com.example.businessadmin.entity.Order;
+import com.example.businessadmin.entity.Payment;
 import com.example.businessadmin.repository.InvoiceRepository;
 import com.example.businessadmin.repository.OrderRepository;
 import com.example.businessadmin.repository.PaymentRepository;
@@ -26,50 +27,63 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public InvoiceResponse generateInvoice(InvoiceRequest request) {
+
         if (request.getOrderId() == null) {
             throw new IllegalArgumentException("Order ID cannot be null");
         }
 
-        // 1️⃣ Fetch the order
+        // 1️⃣ Fetch order
         Order order = orderRepo.findById(request.getOrderId())
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
-        // 2️⃣ Calculate totals
+        // 2️⃣ Calculate totals from payments
         Double totalPaid = paymentRepo.sumPaidForOrder(order.getId());
         if (totalPaid == null) totalPaid = 0.0;
+
         Double pending = Math.max(0.0, order.getTotalAmount() - totalPaid);
 
-        // 3️⃣ Check if an invoice already exists for this order
+        // 3️⃣ Find latest payment date (THIS IS THE KEY)
+        LocalDateTime paymentDate = paymentRepo
+                .findTopByOrderIdOrderByPaymentDateDesc(order.getId())
+                .map(Payment::getPaymentDate)
+                .orElse(null);
+
+        // 4️⃣ Find existing invoice (update or create)
         Optional<Invoice> existingInvoiceOpt = invoiceRepo.findByOrderId(order.getId());
 
         Invoice invoice;
-        boolean isUpdated = false;
+        boolean isUpdated;
 
         if (existingInvoiceOpt.isPresent()) {
-            // 🔁 Update the existing invoice instead of inserting new one
             invoice = existingInvoiceOpt.get();
             isUpdated = true;
         } else {
-            // 🆕 Create a new invoice
             invoice = new Invoice();
             invoice.setOrder(order);
+            isUpdated = false;
         }
 
-        // 4️⃣ Common fields (set or update)
-        invoice.setInvoiceNumber("INV-" + order.getId() + "-" + System.currentTimeMillis());
+        // 5️⃣ Set invoice fields
+        invoice.setInvoiceNumber("INV-" + order.getId());
         invoice.setGeneratedAt(LocalDateTime.now());
         invoice.setTotalAmount(order.getTotalAmount());
         invoice.setTotalPaid(totalPaid);
         invoice.setPendingAmount(pending);
 
-        // 5️⃣ Save invoice
+        // ✅ MOST IMPORTANT LINE
+        invoice.setPaymentDate(paymentDate);
+
+        // 6️⃣ Save
         Invoice saved = invoiceRepo.save(invoice);
 
-        // 6️⃣ Return proper response
+        // 7️⃣ Response
         InvoiceResponse response = toDto(saved);
-        response.setMessage(isUpdated ? "Invoice updated successfully" : "Invoice created successfully");
+        response.setMessage(isUpdated ? "Invoice updated successfully"
+                : "Invoice created successfully");
+
         return response;
     }
+
 
     @Override
     public List<InvoiceResponse> getAllInvoices() {
@@ -99,6 +113,7 @@ public class InvoiceServiceImpl implements InvoiceService {
                 .pendingAmount(i.getPendingAmount())
                 .orderId(i.getOrder().getId())
                 .customerName(i.getOrder().getCustomer().getName())
+                .paymentDate(i.getPaymentDate())
                 .build();
     }
 

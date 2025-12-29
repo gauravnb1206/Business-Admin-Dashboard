@@ -17,4 +17,5 @@ public class InvoiceResponse {
     private Long orderId;
     private String message;
     private String customerName;
+    private LocalDateTime paymentDate;
 }

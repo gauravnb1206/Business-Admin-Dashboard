@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderRequest {
     private Long customerId;
-    private String paymentStatus;
     private List<OrderItem>  items;
     private String status;
 }

@@ -35,4 +35,6 @@ public class Invoice {
 
     private Double pendingAmount;
 
+    private  LocalDateTime paymentDate;
+
 }
