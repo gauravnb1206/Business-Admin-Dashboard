@@ -1,0 +1,10 @@
+# Node
+node_modules/
+.env
+
+# Java / Spring Boot
+target/
+*.log
+
+# OS
+.DS_Store
