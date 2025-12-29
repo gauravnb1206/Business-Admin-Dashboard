@@ -1,0 +1,95 @@
+<div class="payments-page">
+
+  <h2 class="page-title">💳 All Payments</h2>
+
+  <!-- 🔍 Filter Bar -->
+  <div class="filter-bar">
+    <input
+      type="text"
+      placeholder="Search by customer or order ID..."
+      [(ngModel)]="searchTerm"
+      (input)="searchPayments()"
+    />
+
+    <select [(ngModel)]="selectedStatus" (change)="filterByStatus()">
+      <option value="All">All</option>
+      <option value="Paid">Paid</option>
+      <option value="Partially Paid">Partially Paid</option>
+      <option value="Unpaid">Unpaid</option>
+    </select>
+  </div>
+
+  <!-- ⏳ Loading -->
+  <div *ngIf="loading" class="loading">Loading payments...</div>
+
+  <!-- ================= DESKTOP TABLE ================= -->
+  <div class="desktop-only" *ngIf="!loading && filteredPayments.length">
+    <table class="payments-table">
+      <thead>
+        <tr>
+          <th>Payment ID</th>
+          <th>Order ID</th>
+          <th>Customer</th>
+          <th>Amount</th>
+          <th>Method</th>
+          <th>Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let p of filteredPayments">
+          <td>#{{ p.id }}</td>
+          <td>{{ p.orderId }}</td>
+          <td>{{ p.customerName }}</td>
+          <td>₹{{ p.amount | number: '1.2-2' }}</td>
+          <td>{{ p.paymentMethod }}</td>
+          <td>{{ p.paymentDate | date: 'medium' }}</td>
+          <td>
+            <span
+              class="status"
+              [ngClass]="{
+                paid: p.paymentStatus === 'Paid',
+                partial: p.paymentStatus === 'Partially Paid',
+                unpaid: p.paymentStatus === 'Unpaid'
+              }"
+            >
+              {{ p.paymentStatus }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ================= MOBILE CARDS ================= -->
+  <div class="mobile-only" *ngIf="!loading && filteredPayments.length">
+    <div class="payment-card" *ngFor="let p of filteredPayments">
+      <div class="payment-card-top">
+        <strong>#{{ p.id }}</strong>
+        <span
+          class="status"
+          [ngClass]="{
+            paid: p.paymentStatus === 'Paid',
+            partial: p.paymentStatus === 'Partially Paid',
+            unpaid: p.paymentStatus === 'Unpaid'
+          }"
+        >
+          {{ p.paymentStatus }}
+        </span>
+      </div>
+
+      <div class="payment-row"><b>Order:</b> #{{ p.orderId }}</div>
+      <div class="payment-row"><b>Customer:</b> {{ p.customerName }}</div>
+      <div class="payment-row"><b>Amount:</b> ₹{{ p.amount | number:'1.2-2' }}</div>
+      <div class="payment-row"><b>Method:</b> {{ p.paymentMethod }}</div>
+      <div class="payment-row"><b>Date:</b> {{ p.paymentDate | date:'short' }}</div>
+    </div>
+  </div>
+
+  <!-- ❌ Empty -->
+  <div *ngIf="!loading && !filteredPayments.length" class="empty">
+    No payments found.
+  </div>
+
+</div>

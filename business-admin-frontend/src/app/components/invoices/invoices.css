@@ -1,0 +1,160 @@
+/* ================= VISIBILITY ================= */
+.desktop-only { display: block; }
+.mobile-only { display: none; }
+
+/* ================= MOBILE CARDS ================= */
+@media (max-width: 768px) {
+  .desktop-only { display: none; }
+  .mobile-only { display: block; }
+
+  .invoice-card {
+    background: #fffdf7;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  .invoice-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: var(--secondary-color);
+  }
+
+  .invoice-row {
+    font-size: 0.9rem;
+    margin: 4px 0;
+    color: var(--text-color);
+  }
+
+  .header-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .invoice-container {
+    padding: 18px;
+  }
+
+  /* ===================== DESKTOP TABLE COLORS ===================== */
+.invoice-table thead th {
+  background: linear-gradient(90deg, #f4c542, #ffe08a);
+  color: #3e2a1c;
+  font-weight: 700;
+  border-bottom: 3px solid #5a3e2b;
+}
+
+.invoice-table tbody tr {
+  background: #fffdf3;
+  transition: background 0.25s ease, transform 0.15s ease;
+}
+
+.invoice-table tbody tr:nth-child(even) {
+  background: #fff7d6;
+}
+
+.invoice-table tbody tr:hover {
+  background: #fff1bf;
+  transform: scale(1.002);
+}
+
+/* Amount emphasis */
+.invoice-table td:nth-child(4),
+.invoice-table td:nth-child(5),
+.invoice-table td:nth-child(6) {
+  font-weight: 700;
+}
+
+.invoice-table td.text-success {
+  color: #4f8a10;
+}
+
+.invoice-table td.text-danger {
+  color: #b11226;
+}
+
+/* ===================== MOBILE CARD COLORS ===================== */
+.invoice-card {
+  background: linear-gradient(180deg, #fffdf3, #fff7d6);
+  border-left: 6px solid #f4c542;
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 14px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+}
+
+.invoice-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-weight: 700;
+  color: #5a3e2b;
+  padding-bottom: 6px;
+  border-bottom: 2px dashed #f4c542;
+}
+
+/* Invoice rows */
+.invoice-row {
+  font-size: 0.9rem;
+  margin: 5px 0;
+  color: #2c2c2c;
+}
+
+.invoice-row b {
+  color: #d62828;
+}
+
+/* Amount highlighting in cards */
+.invoice-row .paid {
+  color: #4f8a10;
+  font-weight: 700;
+}
+
+.invoice-row .pending {
+  color: #b11226;
+  font-weight: 700;
+}
+
+/* ===================== DOWNLOAD BUTTON ===================== */
+.download-btn {
+  background: linear-gradient(135deg, #5a3e2b, #3e2a1c);
+  color: #ffe08a;
+  border: none;
+  padding: 7px 14px;
+  font-size: 13px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(90,62,43,0.3);
+  transition: all 0.25s ease;
+}
+
+.download-btn:hover {
+  background: linear-gradient(135deg, #f4c542, #ffd966);
+  color: #3e2a1c;
+  transform: translateY(-1px);
+}
+
+/* ===================== MOBILE OPTIMIZATION ===================== */
+@media (max-width: 768px) {
+  .invoice-card {
+    padding: 16px;
+  }
+
+  .invoice-row {
+    font-size: 0.88rem;
+  }
+}
+
+.btn-refresh{
+  margin-bottom: 20px;
+  color: yellow;
+  font-weight: bold;
+}
+
+}

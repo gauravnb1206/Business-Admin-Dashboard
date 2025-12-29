@@ -1,0 +1,68 @@
+<div class="customer-container">
+  <h2 class="page-title">
+    <i class="fa fa-users"></i> Customer Management
+  </h2>
+
+  <!-- Form -->
+  <div class="form-card">
+    <h3 class="form-title">
+      {{ editingCustomer ? 'Update Customer' : 'Add New Customer' }}
+    </h3>
+
+    <form (ngSubmit)="editingCustomer ? updateCustomer() : addCustomer()">
+      <div class="form-grid">
+        <input [(ngModel)]="newCustomer.name" name="name" placeholder="Full Name" required />
+        <input [(ngModel)]="newCustomer.email" name="email" placeholder="Email Address" required />
+        <input [(ngModel)]="newCustomer.phone" name="phone" placeholder="Phone Number" />
+        <input [(ngModel)]="newCustomer.address" name="address" placeholder="Address" />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">
+          {{ editingCustomer ? 'Update Customer' : 'Add Customer' }}
+        </button>
+        <button
+          type="button"
+          *ngIf="editingCustomer"
+          (click)="cancelEdit()"
+          class="btn-cancel"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading">Loading customers...</div>
+
+  <!-- Table -->
+  <div class="table-wrapper" *ngIf="!loading">
+    <table class="customer-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th class="hide-mobile">Phone</th>
+          <th class="hide-mobile">Address</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let c of customers; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ c.name }}</td>
+          <td>{{ c.email }}</td>
+          <td class="hide-mobile">{{ c.phone }}</td>
+          <td class="hide-mobile">{{ c.address }}</td>
+          <td class="action-col">
+            <button class="btn-edit" (click)="editCustomer(c)">Edit</button>
+            <button class="btn-delete" (click)="deleteCustomer(c)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

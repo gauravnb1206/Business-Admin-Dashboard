@@ -1,0 +1,137 @@
+/* ================= VISIBILITY ================= */
+.desktop-only { display: block; }
+.mobile-only { display: none; }
+
+/* ================= MOBILE CARDS ================= */
+@media (max-width: 768px) {
+  .desktop-only { display: none; }
+  .mobile-only { display: block; }
+
+  .payment-card {
+    background: #fffdf7;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  .payment-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+
+  .payment-row {
+    font-size: 0.9rem;
+    margin: 4px 0;
+    color: var(--text-color);
+  }
+
+  .payments-page {
+    padding: 18px;
+  }
+
+  .filter-bar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .filter-bar input {
+    width: 80%;
+    border-radius: 20px;
+  }
+
+  /* ================= SEARCH BAR ENHANCEMENT ================= */
+.filter-bar {
+  background: linear-gradient(135deg, #fff5cc, #fffaf0);
+  border-left: 5px solid #f4c542;
+  margin-bottom: 20px;
+  
+}
+
+.filter-bar input {
+  background: #fff;
+  border: 1px solid #f4c542;
+  font-weight: 500;
+}
+
+.filter-bar input::placeholder {
+  color: #9c8b63;
+}
+
+.filter-bar select {
+  background: #fff;
+  border: 1px solid #f4c542;
+  font-weight: 500;
+  border-radius: 20px;
+}
+
+/* ================= MOBILE PAYMENT CARDS ================= */
+.payment-card {
+  background: linear-gradient(180deg, #fffdf3, #fff7d6);
+  border-left: 6px solid #f4c542;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.payment-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(244, 197, 66, 0.35);
+}
+
+.payment-card-top {
+  padding-bottom: 6px;
+  border-bottom: 2px dashed #f4c542;
+}
+
+.payment-row b {
+  color: #5a3e2b;
+}
+
+/* ================= STATUS BADGES (STRONGER) ================= */
+.status {
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.status.paid {
+  background: #e6f4d7;
+  color: #4f8a10;
+  border: 1px solid #7cb518;
+}
+
+.status.partial {
+  background: #fff3cd;
+  color: #9c6b00;
+  border: 1px solid #e67e22;
+}
+
+.status.unpaid {
+  background: #fde2e2;
+  color: #b11226;
+  border: 1px solid #e74c3c;
+}
+
+/* ================= DESKTOP TABLE HEADER POLISH ================= */
+.payments-table thead th {
+  background:rgb(35, 31, 20);
+  color: #ffffff;
+  font-weight: 700;
+  border-bottom: 3px solid #d62828;
+}
+
+.payments-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.payments-table tbody tr:hover {
+  background: #fff6d9;
+}
+
+
+}

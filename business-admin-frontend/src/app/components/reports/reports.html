@@ -1,0 +1,77 @@
+<div class="report-container" *ngIf="!loading && report">
+
+  <!-- Header -->
+  <div class="header-section">
+    <div class="header-text">
+      <h2 class="title">📊 Monthly Business Report</h2>
+      <h5 class="subtitle">{{ getMonthName() }} {{ year }}</h5>
+    </div>
+
+    <div class="navigation">
+      <button class="btn-nav" (click)="changeMonth(-1)">◀</button>
+      <button class="btn-nav" (click)="changeMonth(1)">▶</button>
+    </div>
+  </div>
+
+  <!-- ================= SUMMARY ================= -->
+  <div class="summary-grid">
+    <div class="stat-card card-orders">
+      <span>Total Orders</span>
+      <strong>{{ report.totalOrders }}</strong>
+    </div>
+
+    <div class="stat-card card-customers">
+      <span>Total Customers</span>
+      <strong>{{ report.totalCustomers }}</strong>
+    </div>
+
+    <div class="stat-card card-amount">
+      <span>Total Order Amount</span>
+      <strong>₹{{ report.totalOrderAmount | number }}</strong>
+    </div>
+
+    <div class="stat-card card-payments">
+      <span>Total Payments</span>
+      <strong>₹{{ report.totalPayments | number }}</strong>
+    </div>
+
+    <div class="stat-card card-pending">
+      <span>Pending Amount</span>
+      <strong>₹{{ report.pendingAmount | number }}</strong>
+    </div>
+
+    <div
+      class="stat-card card-profit"
+      *ngIf="report.netProfit !== undefined"
+    >
+      <span>Net Profit</span>
+      <strong>₹{{ report.netProfit | number }}</strong>
+    </div>
+  </div>
+
+  <!-- ================= PAYMENT BREAKDOWN ================= -->
+  <div class="breakdown-section" *ngIf="report.cashAmount !== undefined">
+    <h4 class="section-title">💰 Payment Breakdown</h4>
+
+    <div class="breakdown-cards">
+      <div class="pay-card cash">
+        <span>Cash</span>
+        <strong>₹{{ report.cashAmount | number }}</strong>
+      </div>
+
+      <div class="pay-card upi">
+        <span>UPI</span>
+        <strong>₹{{ report.upiAmount | number }}</strong>
+      </div>
+
+      <div class="pay-card card">
+        <span>Card</span>
+        <strong>₹{{ report.cardAmount | number }}</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- States -->
+<div *ngIf="loading" class="state-box">Loading report...</div>
+<div *ngIf="error" class="state-box error">{{ error }}</div>

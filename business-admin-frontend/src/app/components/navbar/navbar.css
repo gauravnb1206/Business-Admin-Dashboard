@@ -1,0 +1,155 @@
+/* ================= ROOT COLORS ================= */
+:root {
+  --primary-color: #f7c948;
+  --accent-color: #d62828;
+  --text-dark: #222;
+}
+
+/* ================= NAVBAR ================= */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 78px;
+  background: linear-gradient(90deg, #4b5bdc, #f7c948);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* ================= LEFT SECTION ================= */
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* LOGO */
+.logo {
+  height: 50px;
+  width: auto;
+  border-radius: 8px;
+  background: #fff;
+  padding: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: 
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    filter 0.35s ease;
+}
+
+/* Hover animation */
+.logo:hover {
+  transform: scale(1.08) rotate(-2deg);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+  filter: brightness(1.05);
+}
+
+/* .logo:hover {
+  animation: logoPulse 0.8s ease-in-out;
+}
+
+@keyframes logoPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1.08);
+  }
+} */
+
+
+
+/* BRAND TEXT */
+.brand-text {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+/* ================= LINKS ================= */
+.links {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.links a {
+  text-decoration: none;
+  color: #222;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: all 0.25s ease;
+}
+
+.links a:hover {
+  background: var(--primary-color);
+}
+
+/* ================= LOGOUT BUTTON ================= */
+.logout-btn {
+  background: red;
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.logout-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(214,40,40,0.4);
+}
+
+/* ================= MOBILE ================= */
+.menu-icon {
+  display: none;
+  font-size: 1.6rem;
+  color: #fff;
+  cursor: pointer;
+}
+
+#menu-toggle {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .menu-icon {
+    display: block;
+  }
+
+  .links {
+    position: absolute;
+    top: 64px;
+    right: 0;
+    background: #fff;
+    flex-direction: column;
+    width: 220px;
+    padding: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    display: none;
+  }
+
+  #menu-toggle:checked + .menu-icon + .links {
+    display: flex;
+  }
+
+  .links a,
+  .logout-btn {
+    width: 100%;
+    text-align: left;
+  }
+
+  .brand-text {
+    font-size: 1.05rem;
+  }
+}

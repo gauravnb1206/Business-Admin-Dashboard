@@ -1,0 +1,73 @@
+<div class="invoice-container">
+
+  <!-- Header -->
+  <div class="header-section">
+    <h2>📄 Invoices</h2>
+    <button class="btn-refresh" (click)="loadInvoices()">🔄 Refresh</button>
+  </div>
+
+  <!-- Loading / Error -->
+  <div *ngIf="loading" class="info-box loading-box">Loading invoices...</div>
+  <div *ngIf="error" class="info-box error-box">{{ error }}</div>
+
+  <!-- ================= DESKTOP TABLE ================= -->
+  <div class="desktop-only" *ngIf="!loading && invoices.length">
+    <div class="table-wrapper">
+      <table class="invoice-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Invoice No</th>
+            <th>Order ID</th>
+            <th>Total</th>
+            <th>Paid</th>
+            <th>Pending</th>
+            <th>Generated At</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let inv of invoices">
+            <td>{{ inv.id }}</td>
+            <td>{{ inv.invoiceNumber }}</td>
+            <td>#{{ inv.orderId }}</td>
+            <td>₹{{ inv.totalAmount }}</td>
+            <td class="text-success">₹{{ inv.totalPaid }}</td>
+            <td class="text-danger">₹{{ inv.pendingAmount }}</td>
+            <td>{{ inv.generatedAt | date:'medium' }}</td>
+            <td>
+              <button class="download-btn" (click)="downloadInvoice(inv.id)">
+                ⬇️ Download
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ================= MOBILE CARDS ================= -->
+  <div class="mobile-only" *ngIf="!loading && invoices.length">
+    <div class="invoice-card" *ngFor="let inv of invoices">
+      <div class="invoice-card-top">
+        <strong>#{{ inv.invoiceNumber }}</strong>
+        <button class="download-btn" (click)="downloadInvoice(inv.id)">⬇️</button>
+      </div>
+
+      <div class="invoice-row"><b>Order:</b> #{{ inv.orderId }}</div>
+      <div class="invoice-row"><b>Total:</b> ₹{{ inv.totalAmount }}</div>
+      <div class="invoice-row text-success"><b>Paid:</b> ₹{{ inv.totalPaid }}</div>
+      <div class="invoice-row text-danger"><b>Pending:</b> ₹{{ inv.pendingAmount }}</div>
+      <div class="invoice-row">
+        <b>Date:</b> {{ inv.generatedAt | date:'short' }}
+      </div>
+    </div>
+  </div>
+
+  <!-- No invoices -->
+  <div *ngIf="!loading && invoices.length === 0" class="info-box warning-box">
+    ⚠️ No invoices found.
+  </div>
+
+</div>

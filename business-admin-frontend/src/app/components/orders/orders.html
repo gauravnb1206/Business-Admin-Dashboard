@@ -1,0 +1,275 @@
+<div class="orders-container">
+
+  <!-- Header -->
+  <div class="header">
+    <h2>Orders</h2>
+    <button class="show-form-btn" (click)="toggleForm()">
+      {{ showForm ? 'Close Form' : 'Create Order' }}
+    </button>
+  </div>
+
+  <!-- Create / Edit Order -->
+  <div class="order-form" *ngIf="showForm">
+    <h3>{{ editMode ? 'Edit Order' : 'Create New Order' }}</h3>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Customer</label>
+        <select [(ngModel)]="newOrder.customerId">
+          <option [value]="0" disabled>Select Customer</option>
+          <option *ngFor="let c of customers" [value]="c.id">{{ c.name }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Status</label>
+        <select [(ngModel)]="newOrder.status">
+          <option value="Pending">Pending</option>
+          <option value="Delivered">Delivered</option>
+          <option value="Completed">Completed</option>
+        </select>
+      </div>
+
+      
+
+
+      
+    </div>
+    <!-- Products -->
+    <div class="product-section">
+      <h4>Add Products</h4>
+
+      <div class="form-inline">
+        <select [(ngModel)]="newItemProductId">
+          <option [ngValue]="0" disabled>Select Product</option>
+          <option *ngFor="let p of products" [ngValue]="p.id">
+            {{ p.name }} – ₹{{ p.price }}
+          </option>
+        </select>
+
+        <input type="number" [(ngModel)]="newItemQty" min="1" />
+        <button class="btn-secondary" (click)="addItem()">Add</button>
+      </div>
+
+      <table class="mini-table" *ngIf="newOrder.items.length">
+        <tr *ngFor="let it of newOrder.items; let i = index">
+          <td>{{ getProductNameById(it.product.id) }}</td>
+          <td>x{{ it.quantity }}</td>
+          <td>₹{{ getProductPriceById(it.product.id) }}</td>
+          <td>
+            <button class="btn-remove" (click)="removeItem(i)">✖</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn-primary" (click)="saveOrder()">
+        {{ editMode ? 'Update Order' : 'Save Order' }}
+      </button>
+      <button class="btn-cancel" (click)="cancelForm()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- ================= MONTH FILTER ================= -->
+<div class="order-filter-bar">
+  <div class="filter-group">
+    <label>Month</label>
+    <select [(ngModel)]="selectedMonth" (change)="filterByMonth()">
+      <option value="">All Months</option>
+      <option value="0">January</option>
+      <option value="1">February</option>
+      <option value="2">March</option>
+      <option value="3">April</option>
+      <option value="4">May</option>
+      <option value="5">June</option>
+      <option value="6">July</option>
+      <option value="7">August</option>
+      <option value="8">September</option>
+      <option value="9">October</option>
+      <option value="10">November</option>
+      <option value="11">December</option>
+    </select>
+  </div>
+
+  <div class="filter-group">
+    <label>Year</label>
+    <select [(ngModel)]="selectedYear" (change)="filterByMonth()">
+      <option value="2024">2024</option>
+      <option value="2025">2025</option>
+      <option value="2026">2026</option>
+    </select>
+  </div>
+
+  <button class="btn-reset" (click)="resetMonthFilter()">
+    Reset
+  </button>
+</div>
+
+
+  <!-- ================= DESKTOP TABLE ================= -->
+  <div class="table-container desktop-only">
+    <table class="orders-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>ID</th>
+          <th>Customer</th>
+          <th>Date</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th>Payment</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <ng-container *ngFor="let order of filteredOrders; let i = index">
+          <tr (click)="toggleExpand(i)">
+            <td class="expand-icon">{{ expandedIndex === i ? '▾' : '▸' }}</td>
+            <td>#{{ order.id }}</td>
+            <td>{{ order.customer.name }}</td>
+            <td>{{ order.createdAt | date:'short' }}</td>
+            <td>₹{{ order.totalAmount }}</td>
+            <td>{{ order.status }}</td>
+            <td>
+              <span class="badge" [ngClass]="order.paymentStatus.toLowerCase()">
+                {{ order.paymentStatus }}
+              </span>
+            </td>
+            <td>
+              <button class="btn-action" (click)="toggleDropdown(i, $event)">⋮</button>
+              <ul class="dropdown-menu" *ngIf="dropdownIndex === i">
+                <li (click)="editOrder(order)">Edit</li>
+                <li (click)="openManagePayment(order)">Payment</li>
+                <li (click)="generateInvoice(order)">Invoice</li>
+                <li class="danger" (click)="deleteOrder(order.id!)">Delete</li>
+              </ul>
+            </td>
+          </tr>
+
+          <tr *ngIf="expandedIndex === i" class="expand-row">
+            <td colspan="8">
+              <table class="inner-table">
+                <tr *ngFor="let it of order.items">
+                  <td>{{ getProductNameById(it.product.id) }}</td>
+                  <td>x{{ it.quantity }}</td>
+                  <td>₹{{ it.product.price }}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+
+ <!-- ================= MOBILE CARDS ================= -->
+<div class="mobile-only">
+  <div class="order-card" *ngFor="let order of filteredOrders">
+
+    <!-- HEADER -->
+    <div class="order-card-top">
+      <strong>#{{ order.id }}</strong>
+      <span class="badge" [ngClass]="order.paymentStatus.toLowerCase()">
+        {{ order.paymentStatus }}
+      </span>
+    </div>
+
+    <!-- BASIC INFO -->
+    <div class="order-row"><b>Customer:</b> {{ order.customer.name }}</div>
+    <div class="order-row"><b>Total:</b> ₹{{ order.totalAmount }}</div>
+    <div class="order-row"><b>Status:</b> {{ order.status }}</div>
+
+    <!-- EXPAND BUTTON -->
+    <button
+      class="expand-btn"
+      (click)="toggleMobileExpand(order.id!)"
+    >
+      {{ isMobileExpanded(order.id!) ? 'Hide Items ▲' : 'View Items ▼' }}
+    </button>
+
+    <!-- EXPANDED ITEMS -->
+    <div class="mobile-items" *ngIf="isMobileExpanded(order.id!)">
+      <div class="item-row" *ngFor="let it of order.items">
+        <span class="item-name">{{ getProductNameById(it.product.id) }}</span>
+        <span class="item-qty">x{{ it.quantity }}</span>
+        <span class="item-price">₹{{ it.product.price }}</span>
+      </div>
+    </div>
+
+    <!-- ACTIONS (FULL PARITY WITH DESKTOP) -->
+    <div class="order-actions">
+      <button (click)="editOrder(order)">✏️ Edit</button>
+      <button (click)="openManagePayment(order)">💳 Payment</button>
+      <button (click)="generateInvoice(order)">🧾 Invoice</button>
+      <button (click)="deleteOrder(order.id!)">🗑️ Delete</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================= PAYMENT MODAL ================= -->
+<div class="payment-backdrop" *ngIf="showPaymentForm">
+  <div class="payment-modal">
+
+    <div class="modal-header">
+      <h3>💳 Manage Payment</h3>
+      <button class="close-btn" (click)="closePaymentForm()">✕</button>
+    </div>
+
+    <!-- ORDER SUMMARY -->
+    <div class="payment-summary">
+      <div><b>Order ID:</b> #{{ selectedOrder?.id }}</div>
+      <div><b>Total:</b> ₹{{ selectedOrder?.totalAmount }}</div>
+      <div><b>Paid:</b> ₹{{ selectedOrder?.paidAmount || 0 }}</div>
+      <div class="remaining">
+        <b>Remaining:</b> ₹{{ remainingAmount }}
+      </div>
+    </div>
+
+    <!-- PAYMENT FORM -->
+    <div class="payment-form">
+      <input
+        type="number"
+        placeholder="Enter amount"
+        [(ngModel)]="payment.amount"
+        min="1"
+      />
+
+      <select [(ngModel)]="payment.paymentMethod">
+        <option value="Cash">Cash</option>
+        <option value="UPI">UPI</option>
+        <option value="Card">Card</option>
+      </select>
+
+      <button class="btn-pay" (click)="submitPayment()">
+        {{ editingPayment ? 'Update Payment' : 'Add Payment' }}
+      </button>
+
+      <p class="error" *ngIf="paymentError">{{ paymentError }}</p>
+    </div>
+
+    <!-- EXISTING PAYMENTS -->
+    <div class="payment-history" *ngIf="orderPayments.length">
+      <h4>Previous Payments</h4>
+
+      <div class="payment-item" *ngFor="let p of orderPayments">
+        <div>
+          ₹{{ p.amount }} • {{ p.paymentMethod }}
+          <br />
+          <small>{{ p.paymentDate | date:'short' }}</small>
+        </div>
+
+        <div class="payment-actions">
+          <button (click)="editPayment(p)">✏️</button>
+          <button class="danger" (click)="deletePayment(p.id)">🗑️</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+</div>

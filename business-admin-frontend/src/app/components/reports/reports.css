@@ -1,0 +1,166 @@
+:root {
+  --primary-color: #f4c542;
+  --secondary-color: #5a3e2b;
+  --accent-bg: #fff5cc;
+  --success-color: #7cb518;
+  --danger-color: #e74c3c;
+  --text-color: #2c2c2c;
+}
+
+/* ================= CONTAINER ================= */
+.report-container {
+  max-width: 1150px;
+  margin: 24px auto;
+  padding: 22px;
+  background: #fffdf7;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  font-family: "Poppins", "Segoe UI", sans-serif;
+}
+
+/* ================= HEADER ================= */
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--secondary-color);
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: #7a6d54;
+}
+
+.navigation {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-nav {
+  border: none;
+  background: var(--primary-color);
+  color: var(--secondary-color);
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ================= SUMMARY ================= */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.stat-card {
+  background: var(--accent-bg);
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+  border-top: 5px solid var(--primary-color);
+}
+
+.stat-card span {
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.stat-card strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--secondary-color);
+}
+
+/* Card variants */
+.card-orders { background: #fff1c7; }
+.card-customers { background: #fff0d8; }
+.card-amount { background: #ffefc1; }
+.card-payments { background: #ffec99; }
+.card-pending { background: #ffd6a5; }
+.card-profit { background: #d2f8c2; }
+
+/* ================= BREAKDOWN ================= */
+.breakdown-section {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  color: var(--secondary-color);
+}
+
+.breakdown-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+}
+
+.pay-card {
+  width: 200px;
+  padding: 18px;
+  border-radius: 14px;
+  color: #fff;
+}
+
+.pay-card span {
+  font-size: 0.95rem;
+}
+
+.pay-card strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.pay-card.cash {
+  background: linear-gradient(135deg, #90be6d, #b5e48c);
+}
+.pay-card.upi {
+  background: linear-gradient(135deg, #43aa8b, #90d6b5);
+}
+.pay-card.card {
+  background: linear-gradient(135deg, #577590, #8e9aaf);
+}
+
+/* ================= STATES ================= */
+.state-box {
+  text-align: center;
+  margin-top: 30px;
+  font-style: italic;
+  color: var(--secondary-color);
+}
+.state-box.error {
+  color: var(--danger-color);
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  .header-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pay-card {
+    width: 100%;
+    max-width: 320px;
+  }
+}

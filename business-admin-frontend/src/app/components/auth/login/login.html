@@ -1,0 +1,30 @@
+<div class="login-wrapper">
+  <div class="login-overlay"></div>
+
+  <div class="login-card">
+    <h2>Business Admin</h2>
+    <p class="subtitle">Secure sign-in to your dashboard</p>
+
+    <form (ngSubmit)="login()" novalidate>
+      <input
+        type="text"
+        placeholder="Username"
+        [(ngModel)]="username"
+        name="username"
+        required
+      />
+
+      <input
+        type="password"
+        placeholder="Password"
+        [(ngModel)]="password"
+        name="password"
+        required
+      />
+
+      <button type="submit" class="login-btn">Login</button>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </form>
+  </div>
+</div>

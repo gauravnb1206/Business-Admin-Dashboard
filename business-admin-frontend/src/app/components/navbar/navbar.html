@@ -1,0 +1,27 @@
+<nav *ngIf="showNavbar()" class="navbar">
+  <div class="navbar-left">
+
+    <img src="/assets/images/logo.png" alt="Business Logo" class="logo">
+    <h2 class="brand-text">Business Admin</h2>
+  </div>
+
+  <!-- Mobile toggle -->
+  <input type="checkbox" id="menu-toggle" />
+  <label for="menu-toggle" class="menu-icon">
+    ☰
+  </label>
+
+  <div class="links">
+    <a routerLink="/customers">Customers</a>
+    <a routerLink="/products">Products</a>
+    <a routerLink="/orders">Orders</a>
+    <a routerLink="/payments">Payments</a>
+    <a routerLink="/invoices">Invoices</a>
+    <a routerLink="/reports">Reports</a>
+
+    <!-- 🔴 Logout Button -->
+    <button class="logout-btn" (click)="logout()">
+      🚪 Logout
+    </button>
+  </div>
+</nav>
